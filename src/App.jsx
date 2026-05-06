@@ -102,9 +102,9 @@ const Navbar = ({ onViewChange, currentView }) => {
 
         <div className={`hidden lg:flex items-center gap-8 text-sm font-sans font-medium uppercase tracking-widest transition-colors duration-700 ${isScrolled || currentView !== 'home' ? 'text-dark/70' : 'text-primary/70'}`}>
           <button onClick={() => onViewChange('home')} className="hover:text-accent transition-colors uppercase">Home</button>
-          <a href="#gallery" onClick={() => onViewChange('home')} className="hover:text-accent transition-colors">Collection</a>
-          <a href="#visit" onClick={() => onViewChange('home')} className="hover:text-accent transition-colors">Visit</a>
-          <a href="#contact" onClick={() => onViewChange('home')} className="hover:text-accent transition-colors">Location</a>
+          <button onClick={() => onViewChange('home', null, null, '#gallery')} className="hover:text-accent transition-colors uppercase">Collection</button>
+          <button onClick={() => onViewChange('home', null, null, '#visit')} className="hover:text-accent transition-colors uppercase">Visit</button>
+          <button onClick={() => onViewChange('home', null, null, '#contact')} className="hover:text-accent transition-colors uppercase">Location</button>
         </div>
 
         <div className="flex items-center gap-2 md:gap-4">
@@ -134,8 +134,8 @@ const Navbar = ({ onViewChange, currentView }) => {
       {mobileMenuOpen && (
         <div className="absolute top-full left-0 w-full mt-4 bg-background border border-dark/10 rounded-3xl p-6 md:p-8 flex flex-col gap-5 md:gap-6 lg:hidden shadow-2xl backdrop-blur-xl bg-white/95 animate-slide-down">
           <button onClick={() => { onViewChange('home'); setMobileMenuOpen(false); }} className="text-xl font-sans font-bold text-dark border-b border-dark/5 pb-2 text-left uppercase">Home</button>
-          <button onClick={() => { onViewChange('home'); setMobileMenuOpen(false); }} className="text-xl font-sans font-bold text-dark border-b border-dark/5 pb-2 text-left uppercase">Collection</button>
-          <button onClick={() => { onViewChange('home'); setMobileMenuOpen(false); }} className="text-xl font-sans font-bold text-dark border-b border-dark/5 pb-2 text-left uppercase">Visit Us</button>
+          <button onClick={() => { onViewChange('home', null, null, '#gallery'); setMobileMenuOpen(false); }} className="text-xl font-sans font-bold text-dark border-b border-dark/5 pb-2 text-left uppercase">Collection</button>
+          <button onClick={() => { onViewChange('home', null, null, '#visit'); setMobileMenuOpen(false); }} className="text-xl font-sans font-bold text-dark border-b border-dark/5 pb-2 text-left uppercase">Visit Us</button>
         </div>
       )}
     </nav>
