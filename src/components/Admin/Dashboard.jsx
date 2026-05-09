@@ -13,7 +13,8 @@ import {
   X,
   Palette,
   Type,
-  Pen
+  Pen,
+  Share2
 } from 'lucide-react';
 
 const AdminDashboard = () => {
@@ -30,6 +31,7 @@ const AdminDashboard = () => {
   });
   const [selectedImages, setSelectedImages] = useState([]); // Array of { file, preview, color, id }
   const [editingProduct, setEditingProduct] = useState(null); // Holds product being edited
+  const [copiedId, setCopiedId] = useState(null);
 
   const categories = ["Sunglasses", "Watches", "Perfumes", "Caps", "Waist Belts"];
 
@@ -208,6 +210,13 @@ const AdminDashboard = () => {
     if (error) console.error(error);
     else fetchProducts();
   };
+  
+  const handleCopyLink = (productId) => {
+    const url = `${window.location.origin}/?p=${productId}`;
+    navigator.clipboard.writeText(url);
+    setCopiedId(productId);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -254,6 +263,14 @@ const AdminDashboard = () => {
               <div className="flex justify-between items-center mt-auto pt-4 border-t border-dark/5">
                 <span className="text-[10px] font-mono text-dark/30 uppercase">{product.variants?.length} Colors</span>
                 <div className="flex gap-2">
+                  <button 
+                    onClick={() => handleCopyLink(product.id)}
+                    className={`${copiedId === product.id ? 'text-green-500' : 'text-blue-500'} hover:bg-blue-50 p-2 rounded-full transition-colors flex items-center gap-1`}
+                    title="Copy Sharable Link"
+                  >
+                    {copiedId === product.id ? <Check size={18} /> : <Share2 size={18} />}
+                    {copiedId === product.id && <span className="text-[8px] font-bold uppercase">Copied!</span>}
+                  </button>
                   <button 
                     onClick={() => startEdit(product)}
                     className="text-accent hover:bg-accent/10 p-2 rounded-full transition-colors"

@@ -865,9 +865,25 @@ function App() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    const productId = params.get('p') || params.get('product');
+
     if (params.get('access') === 'terminal') {
       setView('admin');
       window.history.replaceState({}, document.title, "/");
+    } else if (productId) {
+      const fetchProduct = async () => {
+        const { data, error } = await supabase
+          .from('products')
+          .select('*, variants(*)')
+          .eq('id', productId)
+          .single();
+        
+        if (!error && data) {
+          setSelectedProduct(data);
+          setView('product');
+        }
+      };
+      fetchProduct();
     }
   }, []);
 
