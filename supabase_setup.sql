@@ -37,10 +37,12 @@ CREATE POLICY "Allow public read-only access on variants"
 ON variants FOR SELECT USING (true);
 
 CREATE POLICY "Allow auth admin all access on products" 
-ON products FOR ALL TO authenticated USING (true);
+ON products FOR ALL TO authenticated 
+USING (auth.jwt() -> 'user_metadata' ->> 'role' = 'owner');
 
 CREATE POLICY "Allow auth admin all access on variants" 
-ON variants FOR ALL TO authenticated USING (true);
+ON variants FOR ALL TO authenticated 
+USING (auth.jwt() -> 'user_metadata' ->> 'role' = 'owner');
 
 -- 5. Storage Policies (Cleanup first)
 -- Run these ONLY AFTER creating the 'product-images' bucket in the UI
@@ -51,6 +53,6 @@ DROP POLICY IF EXISTS "Admin Delete" ON storage.objects;
 
 -- Re-create Storage Policies
 CREATE POLICY "Public Access" ON storage.objects FOR SELECT USING (bucket_id = 'product-images');
-CREATE POLICY "Admin Upload" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'product-images');
-CREATE POLICY "Admin Update" ON storage.objects FOR UPDATE TO authenticated USING (bucket_id = 'product-images');
-CREATE POLICY "Admin Delete" ON storage.objects FOR DELETE TO authenticated USING (bucket_id = 'product-images');
+CREATE POLICY "Admin Upload" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'product-images' AND auth.jwt() -> 'user_metadata' ->> 'role' = 'owner');
+CREATE POLICY "Admin Update" ON storage.objects FOR UPDATE TO authenticated USING (bucket_id = 'product-images' AND auth.jwt() -> 'user_metadata' ->> 'role' = 'owner');
+CREATE POLICY "Admin Delete" ON storage.objects FOR DELETE TO authenticated USING (bucket_id = 'product-images' AND auth.jwt() -> 'user_metadata' ->> 'role' = 'owner');

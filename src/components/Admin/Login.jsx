@@ -7,15 +7,10 @@ const AdminLogin = ({ onBack }) => {
   const [pin, setPin] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [isSetupMode, setIsSetupMode] = useState(false);
   const [success, setSuccess] = useState(null);
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('setup') === 'owner') {
-      setIsSetupMode(true);
-    }
-  }, []);
+  // Setup mode removed for security. Admin accounts must be created manually in Supabase Dashboard.
+  const isSetupMode = false;
 
     const handleLogin = async (e) => {
       e.preventDefault();
